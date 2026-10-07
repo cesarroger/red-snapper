@@ -11,7 +11,6 @@ settings:
     DEVELOPMENT_TEAM: 2D79JL74UU
     CODE_SIGN_STYLE: Manual
     CODE_SIGN_IDENTITY: "Apple Development"
-    ENABLE_HARDENED_RUNTIME: NO
 targets:
   SnapCore:
     type: framework
@@ -37,10 +36,12 @@ targets:
         INFOPLIST_KEY_LSUIElement: YES
         INFOPLIST_KEY_CFBundleDisplayName: "RED SNAPPER"
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.productivity
-        INFOPLIST_KEY_NSHumanReadableCopyright: "Personal use"
+        INFOPLIST_KEY_NSHumanReadableCopyright: "© 2026 Cesar Peralta"
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
         ENABLE_APP_SANDBOX: NO
+        # Required for notarization.
+        ENABLE_HARDENED_RUNTIME: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
   SnapCoreTests:
     type: bundle.unit-test

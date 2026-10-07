@@ -65,17 +65,32 @@ RedSnapper/
 
 Signing uses your *Apple Development* certificate (team `2D79JL74UU`, set in `project.yml`). A stable signature means the Accessibility grant survives rebuilds.
 
-For daily use, and for **Launch at login**, install a Release build in `/Applications`:
+## Releasing (direct download)
+
+RED SNAPPER can't ship on the Mac App Store. Every App Store app must be sandboxed, and sandboxed apps can't use the Accessibility API that moves other apps' windows. Apple's developer support recommends Developer ID distribution for window managers ([forum answer](https://developer.apple.com/forums/thread/805556)).
+
+One command builds a signed, notarized release:
 
 ```bash
-xcodebuild -project RedSnapper.xcodeproj -scheme "RED SNAPPER" -configuration Release -derivedDataPath build build
+scripts/release.sh
 ```
+
+It runs the tests, archives a universal build (Apple silicon + Intel), signs it with your Developer ID, sends it to Apple for notarization, staples the ticket, checks it with Gatekeeper, and writes:
+
+- `dist/RED-SNAPPER-<version>.zip`: **the recommended download.** Fully notarized and opens without warnings.
+- `dist/RED-SNAPPER-<version>.dmg`: drag-to-Applications disk image. The app inside is notarized; the image wrapper itself is unsigned.
+
+Signing and notarization use the Apple Developer account Xcode is signed in to (*Xcode → Settings → Accounts*), so no passwords are needed. Notarization is free with the Developer Program.
+
+To also notarize the .dmg wrapper, create a `notarytool` profile once (an App Store Connect API key is the most reliable):
 
 ```bash
-cp -R "build/Build/Products/Release/RED SNAPPER.app" /Applications/
+xcrun notarytool store-credentials RedSnapperNotary --key AuthKey_XXXX.p8 --key-id XXXX --issuer <issuer-uuid>
 ```
 
-The `/Applications` copy is a separate binary, so macOS may ask you to approve Accessibility once more. Turn *Launch at login* off and on again from that copy so the login item points at it.
+For a new version, bump `MARKETING_VERSION` (and `CURRENT_PROJECT_VERSION`) in `project.yml` and run the script again.
+
+To install it yourself, unzip and drag **RED SNAPPER.app** to `/Applications`. macOS asks for Accessibility permission once for that copy. Turn *Launch at login* off and on again from it so the login item points there.
 
 ## Behaviour notes
 
