@@ -1,0 +1,65 @@
+name: RedSnapper
+options:
+  bundleIdPrefix: com.csr
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    DEVELOPMENT_TEAM: 2D79JL74UU
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "Apple Development"
+    ENABLE_HARDENED_RUNTIME: NO
+targets:
+  SnapCore:
+    type: framework
+    platform: macOS
+    sources: [SnapCore]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.csr.RedSnapper.SnapCore
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+  RedSnapper:
+    type: application
+    platform: macOS
+    sources: [RedSnapper]
+    dependencies:
+      - target: SnapCore
+    settings:
+      base:
+        PRODUCT_NAME: "RED SNAPPER"
+        PRODUCT_MODULE_NAME: RedSnapper
+        PRODUCT_BUNDLE_IDENTIFIER: com.csr.RedSnapper
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_LSUIElement: YES
+        INFOPLIST_KEY_CFBundleDisplayName: "RED SNAPPER"
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.productivity
+        INFOPLIST_KEY_NSHumanReadableCopyright: "Personal use"
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ENABLE_APP_SANDBOX: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  SnapCoreTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [SnapCoreTests]
+    dependencies:
+      - target: SnapCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.csr.RedSnapper.SnapCoreTests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  RED SNAPPER:
+    build:
+      targets:
+        RedSnapper: all
+        SnapCore: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets: [SnapCoreTests]
