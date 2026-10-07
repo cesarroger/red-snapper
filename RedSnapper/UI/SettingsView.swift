@@ -19,6 +19,7 @@ final class RuntimeStatus: ObservableObject {
 struct SettingsActions {
     var saveLayout: (String) -> Void
     var applyLayout: (SavedLayout) -> Void
+    let updater: Updater
 }
 
 struct SettingsView: View {
@@ -28,7 +29,7 @@ struct SettingsView: View {
 
     var body: some View {
         TabView(selection: $status.selectedTab) {
-            GeneralSettingsView(settings: settings, status: status)
+            GeneralSettingsView(settings: settings, status: status, updater: actions.updater)
                 .tabItem { Label("General", systemImage: "gearshape") }
                 .tag(SettingsTab.general)
             ShortcutSettingsView(settings: settings, status: status)
@@ -72,6 +73,8 @@ private struct HotKeyField: View {
 private struct GeneralSettingsView: View {
     @ObservedObject var settings: AppSettings
     @ObservedObject var status: RuntimeStatus
+    let updater: Updater
+    @State private var autoUpdate = false
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @State private var loginError: String?
 
@@ -92,6 +95,13 @@ private struct GeneralSettingsView: View {
                     .onChange(of: launchAtLogin) { _, newValue in setLaunchAtLogin(newValue) }
                 if let loginError {
                     Text(loginError).font(.caption).foregroundStyle(.orange)
+                }
+                HStack {
+                    Toggle("Check for updates automatically", isOn: $autoUpdate)
+                        .onChange(of: autoUpdate) { _, newValue in updater.automaticallyChecks = newValue }
+                    Spacer()
+                    Button("Check Now") { updater.checkForUpdates() }
+                        .controlSize(.small)
                 }
             }
 
@@ -133,7 +143,10 @@ private struct GeneralSettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .onAppear { launchAtLogin = SMAppService.mainApp.status == .enabled }
+        .onAppear {
+            launchAtLogin = SMAppService.mainApp.status == .enabled
+            autoUpdate = updater.automaticallyChecks
+        }
     }
 
     private func setLaunchAtLogin(_ enabled: Bool) {

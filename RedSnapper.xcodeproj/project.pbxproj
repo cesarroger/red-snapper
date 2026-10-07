@@ -27,6 +27,7 @@
 		60612528E12049031B5BB0B4 /* SnapCycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7433B7B747C73EFCE74EB035 /* SnapCycle.swift */; };
 		6140C48CE3E31BDF6317F165 /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2938058ED8F3163D9FD3E3 /* HUD.swift */; };
 		66B901B89E6CDD553EA16DE7 /* LayoutEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D019629D78886A582610E2 /* LayoutEngineTests.swift */; };
+		66D8B0EDE0727F7BD9718891 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BC09FBF63277CB4668AB28 /* Updater.swift */; };
 		68D9AA1F62EE72745BB87ED4 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4683DF0C0FA6894685D5E8 /* OnboardingView.swift */; };
 		70504A69B3B37ED2009DC66A /* SavedLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BBD0FFA9625762E9CD9B65 /* SavedLayout.swift */; };
 		7834D4A4813C688E038B92B3 /* SnapCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA9B25669906B0554DE0A646 /* SnapCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -34,6 +35,7 @@
 		A0DFAC5378051830E9A39874 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6FDEFFAF1518B8E88483D3 /* AppDelegate.swift */; };
 		AB802B7ED78066260142BE42 /* HotKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAD27EEF892C5C2BB475AF5 /* HotKeyManager.swift */; };
 		B39A891CFCAC131C7A8BBDF7 /* CoordinateConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA521AE66C950A6135CBAEF0 /* CoordinateConverter.swift */; };
+		BC73F7880D6C4C9DFEAAD54B /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 56CBFEA61290597BE8DE0000 /* Sparkle */; };
 		BDBDD3FDD5D4DCD52CF8D44F /* FeatureLogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0DAA52372A24FEB2B435DC /* FeatureLogicTests.swift */; };
 		BF9EE87B13B1641ABE77BFB2 /* AXWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFEA4C845775FD6C3338E904 /* AXWindow.swift */; };
 		CDE46A8256822E202BF9B81C /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B8BE1A4DEA2D6969F575E6 /* MenuBarController.swift */; };
@@ -91,6 +93,7 @@
 /* Begin PBXFileReference section */
 		0B6FDEFFAF1518B8E88483D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0E43293C93D387DCBE6F72AA /* ScreenMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenMath.swift; sourceTree = "<group>"; };
+		13BC09FBF63277CB4668AB28 /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
 		167C1E7602A0D0D62F210B48 /* LayoutEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutEngine.swift; sourceTree = "<group>"; };
 		187CC3A3641AE994E3D3612F /* SnapCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		29EC893084A3DDD9DB59C890 /* TitleBarMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBarMenuController.swift; sourceTree = "<group>"; };
@@ -141,6 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA3EDA7C43EADF6815211D8C /* SnapCore.framework in Frameworks */,
+				BC73F7880D6C4C9DFEAAD54B /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +250,7 @@
 				0B6FDEFFAF1518B8E88483D3 /* AppDelegate.swift */,
 				840C51C23E8B452A944A6262 /* AppSettings.swift */,
 				B8B8BE1A4DEA2D6969F575E6 /* MenuBarController.swift */,
+				13BC09FBF63277CB4668AB28 /* Updater.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -300,6 +305,7 @@
 			);
 			name = RedSnapper;
 			packageProductDependencies = (
+				56CBFEA61290597BE8DE0000 /* Sparkle */,
 			);
 			productName = RedSnapper;
 			productReference = 6CC549F7E7E7209513276D63 /* RedSnapper.app */;
@@ -354,6 +360,9 @@
 			);
 			mainGroup = 58EE7FD449A20A34CFE3314D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B21EDB512C61AEAF9B1368E2 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CCC3A6A700E89A4B057F177F /* Products */;
 			projectDirPath = "";
@@ -397,6 +406,7 @@
 				27DCD2D84D7B15FB9C89EFB1 /* SnapPicker.swift in Sources */,
 				24287B7066231556029635FF /* SnapPreviewOverlay.swift in Sources */,
 				FEC6C4C818AAC82DEA32F1C4 /* TitleBarMenuController.swift in Sources */,
+				66D8B0EDE0727F7BD9718891 /* Updater.swift in Sources */,
 				D2E63679B3E8F86AE3C711E1 /* WindowManager.swift in Sources */,
 				0D106FAEF82DADC76CF861AA /* WindowTracker.swift in Sources */,
 			);
@@ -659,6 +669,7 @@
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RedSnapper/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "RED SNAPPER";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
@@ -684,6 +695,7 @@
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RedSnapper/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "RED SNAPPER";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
@@ -740,6 +752,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B21EDB512C61AEAF9B1368E2 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		56CBFEA61290597BE8DE0000 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B21EDB512C61AEAF9B1368E2 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6CADC6DBC4631149826F24DC /* Project object */;
 }

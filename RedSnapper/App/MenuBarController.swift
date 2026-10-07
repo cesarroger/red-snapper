@@ -9,6 +9,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         var saveLayout: () -> Void
         var openSettings: (SettingsTab) -> Void
         var openOnboarding: () -> Void
+        var checkForUpdates: () -> Void
     }
 
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -72,6 +73,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
 
         menu.addItem(.separator())
         menu.addItem(item("Settings…", #selector(showSettings), key: ","))
+        menu.addItem(item("Check for Updates…", #selector(checkForUpdates)))
         menu.addItem(item("Quit RED SNAPPER", #selector(quit), key: "q"))
     }
 
@@ -145,5 +147,6 @@ final class MenuBarController: NSObject, NSMenuDelegate {
     @objc private func toggleTitleBar() { settings.titleBarMenuEnabled.toggle() }
     @objc private func showSettings() { handlers.openSettings(.general) }
     @objc private func showOnboarding() { handlers.openOnboarding() }
+    @objc private func checkForUpdates() { handlers.checkForUpdates() }
     @objc private func quit() { NSApp.terminate(nil) }
 }

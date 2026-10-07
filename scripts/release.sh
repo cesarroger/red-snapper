@@ -9,6 +9,12 @@
 # (Xcode → Settings → Accounts); no passwords are needed.
 # Optional: with a notarytool keychain profile (NOTARY_PROFILE, default RedSnapperNotary)
 # the .dmg wrapper is notarized and stapled too.
+#
+# Notarized builds are also signed for Sparkle (private key in your keychain, account
+# "red-snapper") and added to appcast.xml. Publish with:
+#   gh release create v<version> dist/RED-SNAPPER-<version>.zip dist/RED-SNAPPER-<version>.dmg
+#   git add appcast.xml && git commit -m "Release <version>" && git push
+# Push appcast.xml only *after* the release exists, or apps will try to download a missing file.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -87,5 +93,11 @@ fi
 if [[ $NOTARIZE -eq 1 ]]; then
   echo "▸ Verifying with Gatekeeper"
   spctl --assess --type execute --verbose "$APP"
+
+  echo "▸ Signing the update and adding it to appcast.xml"
+  SPARKLE_BIN=$(find build/SourcePackages/artifacts/sparkle -type d -name bin | head -1)
+  SIGNATURE=$("$SPARKLE_BIN/sign_update" --account red-snapper "$ZIP")
+  scripts/update_appcast.py "$VERSION" "$BUILD" \
+    "https://github.com/cesarroger/red-snapper/releases/download/v$VERSION/$(basename "$ZIP")" "$SIGNATURE"
 fi
 echo "✓ Release ready: $ZIP and $DMG"

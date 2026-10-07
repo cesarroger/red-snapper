@@ -1,108 +1,96 @@
-# RED SNAPPER 🐟
+<p align="center">
+  <img src="docs/images/hero.png" alt="RED SNAPPER: snap your windows into place" width="100%">
+</p>
 
-A native macOS (14+) window snapping/tiling menu bar app. Swift, AppKit + SwiftUI. For personal use, so there's no App Store build and no notarization.
+<p align="center">
+  <a href="https://github.com/cesarroger/red-snapper/releases/latest"><b>⬇︎ Download for Mac</b></a>
+  &nbsp;·&nbsp; free &nbsp;·&nbsp; macOS 14 Sonoma or newer &nbsp;·&nbsp; Apple silicon & Intel
+</p>
 
-## Features
+---
 
-| | |
-|---|---|
-| **Keyboard snapping** | Halves, quarters, thirds, two-thirds, maximize, center |
-| **Press again to cycle** | ⌃⌥← again goes ½ → ⅔ → ⅓. Press once more at ⅓ and the window hops to the right half of the display on your left (if there is one) |
-| **Restore previous size** | ⌃⌥⌫ puts the window back to where it was before RED SNAPPER first moved it. Dragging a snapped window away also restores its size |
-| **Drag to snap** | Drag a title bar to an edge or corner, with a translucent preview |
-| **Title-bar snap menu** | Right-click an empty spot in any window's title bar to pick a layout with the mouse |
-| **4-up grid** | ⌃⌥Q tiles the 4 most recently used windows on the current display |
-| **Multiple displays** | ⌃⌥⌘→ / ⌃⌥⌘← move a window to the next/previous display. A snapped window keeps its zone; a free window keeps its relative position and size |
-| **Saved layouts** | Save where every window is, on every display, as a named layout. Restore it from the menu, from Settings, or with its own shortcut |
-| **Excluded apps** | Apps RED SNAPPER never touches (games, full-screen tools…). You can toggle the current app from the menu bar |
-| **Settings** | Remap any shortcut, gap 0–40 pt, feature toggles, launch at login |
+## Hi, I'm RED SNAPPER 🐟
 
-### Default shortcuts (all ⌃⌥ …)
+You know that moment when you have a browser, a chat, your music session and some notes all piled on top of each other, and you spend more time dragging windows around than actually working?
 
-| Keys | Action | Keys | Action |
-|---|---|---|---|
-| ← → ↑ ↓ | halves (press again to cycle) | U I J K | quarters |
-| D F G | left / center / right third | ↩ | maximize |
-| C | center | ⌫ | restore previous size |
-| Q | 4-up grid | ⌘→ / ⌘← | next / previous display |
+RED SNAPPER fixes that. It's a tiny app that lives in your menu bar and snaps windows exactly where you want them, with one keystroke or a quick drag to the edge of the screen. No fiddling, no pixel-hunting, no "why is this window *slightly* overlapping that one."
 
-Left/right two-thirds have no default key; you reach them by pressing a half or third again. You can bind them in Settings → Shortcuts.
+It's free, it's open source, and it stays out of your way until you need it.
 
-## Project layout
+## What it can do
 
-```
-project.yml                 XcodeGen spec (source of truth for RedSnapper.xcodeproj)
-SnapCore/                   Pure logic, no AppKit/AX. Fully unit-tested (71 tests).
-  SnapZone.swift            Zones as spans of a columns×rows grid
-  LayoutEngine.swift        zone + visibleFrame + gap → CGRect; min-size re-anchoring
-  CoordinateConverter.swift AppKit (bottom-left) ⇄ Accessibility (top-left) flip
-  ScreenMath.swift          which display a window is on, next/prev/left/right display, relocation
-  DragZoneDetector.swift    cursor position → drag zone
-  SnapCycle.swift           press-again cycling and display hops
-  DragRestore.swift         restore-on-drag geometry
-  GridPlanner.swift         4-up: pick windows by recency, zones by window count
-  SavedLayout.swift         layout model + matching saved windows to open ones
-  PreferencesStore.swift    every preference in UserDefaults
-  HotKeyModel.swift         KeyCombo, HotKeyAction, default bindings, key names
-SnapCoreTests/              XCTest for all of the above
-RedSnapper/
-  App/                      Entry point, AppDelegate, menu bar, observable settings
-  Accessibility/            AX wrapper, WindowManager, drag-to-snap, title-bar tap, MRU tracker
-  HotKeys/                  Carbon RegisterEventHotKey manager
-  UI/                       Onboarding, Settings, shortcut recorder, snap picker, preview overlay, HUD
-  Resources/                Asset catalog with the app icon
-```
+**⌨️ Snap with your keyboard.** Hold **Control + Option** and tap an arrow key. Boom: left half, right half, top, bottom. Tap the same arrow again and the window cycles from ½ to ⅔ to ⅓ of the screen. Keep going and it swims over to your other display.
 
-**Threading.** Accessibility calls block for up to the messaging timeout (0.3 s) when the target app is hung. So every window operation snapshots the screens and settings into a `SnapContext` on the main thread, then does its AX work on a background queue. Drag detection uses its own queue. The only AX call on the main thread is the title-bar right-click check, which is capped at 50 ms and only runs for right-clicks in a title-bar band. Measured with an app frozen: the worst main-thread delay was 35 ms, the same as idle.
+**🖱️ Drag to snap.** Drag any window to a screen edge or corner and a red preview shows where it'll land. Let go and it's snapped. Drag it away again and it pops back to its old size.
 
-## Build & run in Xcode
+**🔲 The 4-up grid.** Press **⌃⌥Q** and your four most recently used windows tile into a neat 2×2 grid. Perfect for "I need to see everything at once."
 
-1. Open `RedSnapper.xcodeproj` (regenerate it with `xcodegen generate` after adding or removing files).
-2. Pick the **RED SNAPPER** scheme with destination **My Mac**.
-3. **⌘R** to run, **⌘U** to run the SnapCore unit tests.
-4. On first launch, grant Accessibility: click **Open System Settings**, then turn on **RED SNAPPER** under *Privacy & Security → Accessibility*.
-5. Look for the 🐟 in the menu bar. There's no Dock icon. Launching the app again while it's running opens Settings.
+**🎯 Right-click to pick.** Right-click an empty spot in any window's title bar and pick a layout from a little menu. Great when you can't remember a shortcut.
 
-Signing uses your *Apple Development* certificate (team `2D79JL74UU`, set in `project.yml`). A stable signature means the Accessibility grant survives rebuilds.
+**💾 Saved layouts.** Got a "making beats" setup and an "answering email" setup? Save each arrangement once, then bring it back with a single shortcut, across every display.
 
-## Releasing (direct download)
+**↩️ Changed your mind?** **⌃⌥⌫** puts the window back exactly where it was before you snapped it.
 
-RED SNAPPER can't ship on the Mac App Store. Every App Store app must be sandboxed, and sandboxed apps can't use the Accessibility API that moves other apps' windows. Apple's developer support recommends Developer ID distribution for window managers ([forum answer](https://developer.apple.com/forums/thread/805556)).
+**🖥️🖥️ Plays nice with multiple displays.** Send a window to your other screen with **⌃⌥⌘ + arrow**. It keeps its spot and its size.
 
-One command builds a signed, notarized release:
+<p align="center">
+  <img src="docs/images/picker.png" alt="The snap picker that appears when you right-click a title bar" width="420">
+</p>
 
-```bash
-scripts/release.sh
-```
+## Shortcuts cheat sheet
 
-It runs the tests, archives a universal build (Apple silicon + Intel), signs it with your Developer ID, sends it to Apple for notarization, staples the ticket, checks it with Gatekeeper, and writes:
+Every shortcut starts with **⌃ Control + ⌥ Option**. You can change any of them in Settings.
 
-- `dist/RED-SNAPPER-<version>.zip`: **the recommended download.** Fully notarized and opens without warnings.
-- `dist/RED-SNAPPER-<version>.dmg`: drag-to-Applications disk image. The app inside is notarized; the image wrapper itself is unsigned.
+| Press | To get | | Press | To get |
+|:---:|---|---|:---:|---|
+| **← →** | left / right half | | **U I J K** | the four corners |
+| **↑ ↓** | top / bottom half | | **D F G** | left / middle / right third |
+| **↩ Return** | full screen | | **C** | center it |
+| **Q** | 4-up grid | | **⌫ Delete** | undo the snap |
+| **⌘ + ← →** | move to the other display | | *same key again* | cycle the size (½ → ⅔ → ⅓) |
 
-Signing and notarization use the Apple Developer account Xcode is signed in to (*Xcode → Settings → Accounts*), so no passwords are needed. Notarization is free with the Developer Program.
+## Getting started
 
-To also notarize the .dmg wrapper, create a `notarytool` profile once (an App Store Connect API key is the most reliable):
+1. **[Download the latest release](https://github.com/cesarroger/red-snapper/releases/latest)** and unzip it.
+2. Drag **RED SNAPPER** into your **Applications** folder and open it.
+3. RED SNAPPER asks for **Accessibility** permission. Click *Open System Settings* and flip the switch next to RED SNAPPER.
+4. Look for the little red fish 🐟 in your menu bar. That's it. Go snap something.
 
-```bash
-xcrun notarytool store-credentials RedSnapperNotary --key AuthKey_XXXX.p8 --key-id XXXX --issuer <issuer-uuid>
-```
+**Why does it need Accessibility?** That's the macOS permission that lets an app move and resize other apps' windows, which is the whole job. RED SNAPPER doesn't read what's *in* your windows, doesn't collect anything, and the only time it goes online is to check for updates.
 
-For a new version, bump `MARKETING_VERSION` (and `CURRENT_PROJECT_VERSION`) in `project.yml` and run the script again.
+## Make it yours
 
-To install it yourself, unzip and drag **RED SNAPPER.app** to `/Applications`. macOS asks for Accessibility permission once for that copy. Turn *Launch at login* off and on again from it so the login item points there.
+Open **Settings** from the fish menu to:
 
-## Behaviour notes
+- remap any shortcut (click it, press new keys, done)
+- add a little breathing room between windows with **window gap**
+- tell RED SNAPPER to leave certain apps alone (games, full-screen tools…)
+- start it automatically when you log in
+- turn auto-updates on or off
 
-- **Menu bar & Dock**: layouts use `NSScreen.visibleFrame`, so the menu bar and Dock are never covered. The gap is applied at the screen edges and between windows.
-- **Windows with a minimum or fixed size** keep the size they insist on, are pinned to the zone's outer edge(s), and stay on screen.
-- **Restore** remembers the frame from before the *first* snap, so cycling through several sizes and then restoring goes back to where you started. Moving or resizing a window by hand starts the memory over.
-- **Snap picker** picks are exact: choosing *Left Half* twice doesn't cycle. Right-clicks on toolbar buttons, tabs or window content are left alone.
-- **Saved layouts** match windows by app and document title first, then by stacking order. Apps that aren't running are skipped and listed in the confirmation notice. Saving under an existing name replaces that layout and keeps its shortcut.
-- **macOS's own edge tiling** (on by default since macOS 15) also reacts to edge drags. RED SNAPPER re-applies its zone if macOS moves the window afterwards. For the smoothest drags, turn it off in *System Settings → Desktop & Dock*.
-- **Stage Manager**: windows parked in other stages are skipped by the 4-up grid and layouts.
-- Settings live in `UserDefaults` (`com.csr.RedSnapper`). Reset everything with:
+<p align="center">
+  <img src="docs/images/settings.png" alt="RED SNAPPER settings" width="460">
+</p>
 
-```bash
-defaults delete com.csr.RedSnapper
-```
+## Little questions
+
+**Is it really free?** Yep. No trial, no account, no ads. It's [MIT-licensed](LICENSE) open source.
+
+**How does it update?** It checks for new versions now and then (you can switch that off), and every update is signed, so only real RED SNAPPER updates get installed.
+
+**Why isn't it on the Mac App Store?** Apple requires App Store apps to run in a sandbox, and sandboxed apps aren't allowed to move other apps' windows. So, like most window managers, RED SNAPPER is a direct download. It's still signed and **notarized by Apple**, so your Mac will open it without any scary warnings.
+
+**My Mac already snaps windows. Why would I want this?** macOS has basic tiling built in, and RED SNAPPER happily takes over when you drag. For the smoothest drags, switch off *System Settings → Desktop & Dock → "Drag windows to screen edges to tile"*. What you get on top: keyboard shortcuts for everything, thirds, cycling sizes, the 4-up grid, saved layouts and undo.
+
+**Something's not working.** Please [open an issue](https://github.com/cesarroger/red-snapper/issues) and tell me what happened. Screenshots help a lot!
+
+## For tinkerers
+
+RED SNAPPER is written in Swift with AppKit and SwiftUI. Want to build it yourself, poke around the code or send a pull request? Head over to **[DEVELOPMENT.md](DEVELOPMENT.md)**.
+
+---
+
+<p align="center">
+  Made with ❤️ and a slightly unhealthy number of open windows by <b>Cesar Peralta</b>.<br>
+  <sub>RED SNAPPER is MIT-licensed. Have fun with it.</sub>
+</p>

@@ -4,6 +4,10 @@ options:
   deploymentTarget:
     macOS: "14.0"
   createIntermediateGroups: true
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: "2.10.0"
 settings:
   base:
     SWIFT_VERSION: "5.0"
@@ -24,15 +28,20 @@ targets:
   RedSnapper:
     type: application
     platform: macOS
-    sources: [RedSnapper]
+    sources:
+      - path: RedSnapper
+        excludes: [Info.plist]
     dependencies:
       - target: SnapCore
+      - package: Sparkle
     settings:
       base:
         PRODUCT_NAME: "RED SNAPPER"
         PRODUCT_MODULE_NAME: RedSnapper
         PRODUCT_BUNDLE_IDENTIFIER: com.csr.RedSnapper
         GENERATE_INFOPLIST_FILE: YES
+        # Merged with the generated plist; holds Sparkle's update feed and public key.
+        INFOPLIST_FILE: RedSnapper/Info.plist
         INFOPLIST_KEY_LSUIElement: YES
         INFOPLIST_KEY_CFBundleDisplayName: "RED SNAPPER"
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.productivity

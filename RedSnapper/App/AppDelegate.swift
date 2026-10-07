@@ -25,6 +25,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     private let picker = SnapPickerPanel()
     private let hud = HUD()
+    private let updater = Updater()
 
     private let status = RuntimeStatus()
     private var settingsWindow: NSWindow?
@@ -39,7 +40,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             applyLayout: { [weak self] in self?.applyLayout($0) },
             saveLayout: { [weak self] in self?.promptSaveLayout() },
             openSettings: { [weak self] in self?.showSettings(tab: $0) },
-            openOnboarding: { [weak self] in self?.showOnboarding() }))
+            openOnboarding: { [weak self] in self?.showOnboarding() },
+            checkForUpdates: { [weak self] in self?.updater.checkForUpdates() }))
+        updater.start()
 
         // Re-register hotkeys whenever bindings, layout shortcuts or the master toggle change,
         // and suspend them while a shortcut is being recorded in Settings.
@@ -216,7 +219,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func showSettings(tab: SettingsTab?) {
         if settingsWindow == nil {
             let actions = SettingsActions(saveLayout: { [weak self] in self?.saveLayout(named: $0) },
-                                          applyLayout: { [weak self] in self?.applyLayout($0) })
+                                          applyLayout: { [weak self] in self?.applyLayout($0) },
+                                          updater: updater)
             let hosting = NSHostingController(rootView: SettingsView(settings: settings, status: status, actions: actions))
             let window = NSWindow(contentViewController: hosting)
             window.title = "RED SNAPPER Settings"
