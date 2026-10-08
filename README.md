@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/hero.png" alt="RED SNAPPER: snap your windows into place" width="100%">
+  <img src="docs/images/hero.gif" alt="RED SNAPPER in action: windows snap into corners with keyboard shortcuts, then one is dragged into place" width="100%">
 </p>
 
 <p align="center">
@@ -81,6 +81,8 @@ Open **Settings** from the fish menu to:
 **Why isn't it on the Mac App Store?** Apple requires App Store apps to run in a sandbox, and sandboxed apps aren't allowed to move other apps' windows. So, like most window managers, RED SNAPPER is a direct download. It's still signed and **notarized by Apple**, so your Mac will open it without any scary warnings.
 
 **My Mac already snaps windows. Why would I want this?** macOS has basic tiling built in, and RED SNAPPER happily takes over when you drag. For the smoothest drags, switch off *System Settings → Desktop & Dock → "Drag windows to screen edges to tile"*. What you get on top: keyboard shortcuts for everything, thirds, cycling sizes, the 4-up grid, saved layouts and undo.
+
+**Does it collect anything?** Nope. No account, no analytics, no tracking. It only ever goes online to check for updates, and you can turn that off. The details are in the [privacy policy](PRIVACY.md).
 
 **Something's not working.** Please [open an issue](https://github.com/cesarroger/red-snapper/issues) and tell me what happened. Screenshots help a lot!
 
